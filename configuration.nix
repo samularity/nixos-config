@@ -11,7 +11,16 @@
 
 {
 
-  imports = [ ];
+  imports = [  
+    ./retiolum.nix
+  ];
+
+  networking.retiolum.ipv4 = "10.243.0.42";  # optional
+  networking.retiolum.ipv6 = "42:0:2c4b:29bf:c7e4:6775:339e:2a0";
+  services.tinc.networks.retiolum = {
+    rsaPrivateKeyFile = "/home/sam/retiolum-cfg/rsa_key.priv";
+    ed25519PrivateKeyFile = "/home/sam/retiolum-cfg/ed25519_key.priv";
+  };
 
   nix.nixPath = ["nixpkgs=${pkgs.path}" ];
 
