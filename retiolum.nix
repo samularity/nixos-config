@@ -60,17 +60,6 @@ in {
     networking.firewall.allowedUDPPorts = [ 655 ];
     #services.netdata.portcheck.checks.tinc.port = 655;
 
-    systemd.network.enable = true;
-    systemd.network.networks = {
-      "${netname}".extraConfig = ''
-        [Match]
-        Name = tinc.${netname}
 
-        [Network]
-        Address=${cfg.ipv6}/16
-      '' + optionalString (cfg.ipv4 != null) ''
-        Address=${cfg.ipv4}/12
-      '';
-    };
   };
 }

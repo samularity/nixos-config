@@ -22,6 +22,10 @@
     ed25519PrivateKeyFile = "/home/sam/retiolum-cfg/ed25519_key.priv";
   };
 
+  networking.interfaces."tinc.retiolum".ipv4.addresses = [ { address = config.networking.retiolum.ipv4; prefixLength = 16; } ];
+  networking.interfaces."tinc.retiolum".ipv6.addresses = [ { address = config.networking.retiolum.ipv6; prefixLength = 16; } ];
+
+
   nix.nixPath = ["nixpkgs=${pkgs.path}" ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -38,6 +42,7 @@
   };
 
   boot.tmp.useTmpfs  = true; #make sure /tmp is in ram
+  boot.supportedFilesystems = [ "ntfs" ];
 
   networking.hostName = "murks"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -69,7 +74,7 @@
   # Enable the KDE Plasma Desktop Environment.
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.plasma5.enable = true;
-
+  
   # Configure keymap in X11
   services.xserver = {
     layout = "de";
@@ -81,6 +86,9 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+
+  #enable bluetooth
+  hardware.bluetooth.enable = true;
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -150,6 +158,14 @@ programs.ssh.startAgent = true;
           sha256 = "sha256-+0haTk/xbPoustJVE81tI9X8gcfiamx8nZBm7kGGY6c=";
         }
 
+        {
+
+          name = "code-spell-checker-german";
+          publisher = "streetsidesoftware";
+          version = "2.2.1";
+          sha256 = "sha256-F0ykTfFAZSqWfntYKWWEgtUyLimBT0Q0fiE219/YqGs=";
+        }
+
         ];
       });
 
@@ -173,7 +189,10 @@ programs.ssh.startAgent = true;
       firefox
       unrar
       libsForQt5.ark
-            
+      gparted
+      element-desktop
+      pulseview
+
       (pkgs.writers.writeDashBin "code" ''
       NIX_LD_LIBRARY_PATH=${NIX_LD_LIBRARY_PATH} NIX_LD=${NIX_LD} ${myVSCODE}/bin/code "$@"
       '')
@@ -208,6 +227,9 @@ programs.ssh.startAgent = true;
         SUBSYSTEM=="usb",GROUP="dialout", MODE="0664", ATTRS{idVendor}=="15a2", ATTRS{idProduct}=="0054"
       '';
   };  
+
+#used for gio mount dav:
+services.gvfs.enable = true;
 
 
   # Some programs need SUID wrappers, can be configured further or are
