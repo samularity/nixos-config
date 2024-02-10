@@ -11,8 +11,10 @@
 
 {
 
-  imports = [  
-    ./retiolum.nix
+  imports = [ 
+    ./hardware-configuration.nix
+    ../retiolum.nix
+#    ../common.nix
   ];
 
   networking.retiolum.ipv4 = "10.243.0.42";  # optional
@@ -33,6 +35,7 @@
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
@@ -41,7 +44,9 @@
     "/crypto_keyfile.bin" = null;
   };
 
-  boot.tmp.useTmpfs  = true; #make sure /tmp is in ram
+  boot.tmp.useTmpfs  = false; #make sure /tmp is in ram
+  #boot.tmp.tmpfsSize = "95%";
+
   boot.supportedFilesystems = [ "ntfs" ];
 
   networking.hostName = "murks"; # Define your hostname.
@@ -50,23 +55,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "de_DE.UTF-8";
-    LC_IDENTIFICATION = "de_DE.UTF-8";
-    LC_MEASUREMENT = "de_DE.UTF-8";
-    LC_MONETARY = "de_DE.UTF-8";
-    LC_NAME = "de_DE.UTF-8";
-    LC_NUMERIC = "de_DE.UTF-8";
-    LC_PAPER = "de_DE.UTF-8";
-    LC_TELEPHONE = "de_DE.UTF-8";
-    LC_TIME = "de_DE.UTF-8";
-  };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -81,8 +69,7 @@
     xkbVariant = "nodeadkeys";
   };
 
-  # Configure console keymap
-  console.keyMap = "de-latin1-nodeadkeys";
+
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -182,7 +169,6 @@ programs.ssh.startAgent = true;
       kate
       google-chrome
       thunderbird
-      git
       bintools
       vlc
       signal-desktop
@@ -192,6 +178,7 @@ programs.ssh.startAgent = true;
       gparted
       element-desktop
       pulseview
+      inkscape
 
       (pkgs.writers.writeDashBin "code" ''
       NIX_LD_LIBRARY_PATH=${NIX_LD_LIBRARY_PATH} NIX_LD=${NIX_LD} ${myVSCODE}/bin/code "$@"
@@ -204,21 +191,8 @@ programs.ssh.startAgent = true;
   services.xserver.displayManager.autoLogin.enable = true;
   services.xserver.displayManager.autoLogin.user = "sam";
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
 
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-    htop
-    python3
-    usbutils
-    file
-  ];
 
 
   services.udev = {
@@ -249,7 +223,17 @@ services.gvfs.enable = true;
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  #networking.firewall.enable = false;
+
+
+#    networking.firewall = {
+#      enable = true;
+#      allowedTCPPorts = [ 23 50000 52000 ];
+#      allowedUDPPorts = [ 50000 50001 ];
+#      allowedUDPPortRanges = [
+#          { from = 19997; to = 19999; }
+#      ];
+#  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
