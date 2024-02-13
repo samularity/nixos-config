@@ -34,6 +34,7 @@
           # Overlays-module makes "pkgs.unstable" available in configuration.nix
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
           disko.nixosModules.disko
+          ./common.nix
           ./box/configuration.nix
         ];
         };

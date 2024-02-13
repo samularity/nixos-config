@@ -22,10 +22,10 @@
               content = {
                 type = "filesystem";
                 #works:
-                #format = "ext4";
+                format = "ext4";
 
                 #won't work:
-                format = "bcachefs";
+                #format = "bcachefs";
                 mountpoint = "/";
               };
             };
