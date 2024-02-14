@@ -5,6 +5,11 @@ This repository contains my NixOS system configurations.
 To update the system use:
 
 ```
-sudo nix flake lock --update-input nixpkgs -I /etc/nixos
+nix flake update
 sudo nixos-rebuild switch --flake /etc/nixos#murks
+```
+
+To update a remote system use:
+```
+sudo nixos-rebuild switch --flake 'github:samularity/nixos-config#box'
 ```
