@@ -27,12 +27,6 @@
   networking.interfaces."tinc.retiolum".ipv4.addresses = [ { address = config.networking.retiolum.ipv4; prefixLength = 16; } ];
   networking.interfaces."tinc.retiolum".ipv6.addresses = [ { address = config.networking.retiolum.ipv6; prefixLength = 16; } ];
 
-
-  nix.nixPath = ["nixpkgs=${pkgs.path}" ];
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 5;

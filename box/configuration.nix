@@ -27,6 +27,7 @@ services.openssh = {
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
 
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.users.alice = {
   #   isNormalUser = true;

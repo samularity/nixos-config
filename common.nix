@@ -3,6 +3,8 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.nixPath = ["nixpkgs=${pkgs.path}" ];
 
   environment.systemPackages = with pkgs; [
     htop
