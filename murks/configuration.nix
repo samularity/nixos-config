@@ -175,7 +175,7 @@ programs.ssh.startAgent = true;
       element-desktop
       pulseview
       inkscape
-
+      wine
       (pkgs.writers.writeDashBin "code" ''
       NIX_LD_LIBRARY_PATH=${NIX_LD_LIBRARY_PATH} NIX_LD=${NIX_LD} ${myVSCODE}/bin/code "$@"
       '')
@@ -186,10 +186,8 @@ programs.ssh.startAgent = true;
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "sam";
-
-
-
-
+  
+  services.nixos-versioncheck.enable = true;
 
   services.udev = {
       extraRules = ''

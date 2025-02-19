@@ -6,8 +6,10 @@
   inputs.nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   inputs.disko.url = "github:nix-community/disko";
   inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.nixos-versioncheck.url = "github:samularity/nixos-versioncheck";
+  inputs.nixos-versioncheck.inputs.nixpkgs.follows = "nixpkgs";
 
- outputs = { self, nixpkgs, nixpkgs-unstable, nixos-hardware, disko }:
+ outputs = { self, nixpkgs, nixpkgs-unstable, nixos-hardware, disko, nixos-versioncheck }:
     let
       system = "x86_64-linux";
       overlay-unstable = final: prev: {
@@ -24,6 +26,7 @@
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
           ./common.nix
           ./murks/configuration.nix
+          nixos-versioncheck.nixosModules.x86_64-linux.default
           nixos-hardware.nixosModules.lenovo-thinkpad-x270
         ];
       };
