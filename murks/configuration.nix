@@ -74,7 +74,7 @@
   hardware.bluetooth.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
+  #sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -119,6 +119,7 @@ programs.ssh.startAgent = true;
             ms-python.python
             ms-vscode.cpptools
             ms-vscode.cmake-tools
+            ms-vscode-remote.remote-ssh
             twxs.cmake
             vscode-extensions.streetsidesoftware.code-spell-checker
             tomoki1207.pdf

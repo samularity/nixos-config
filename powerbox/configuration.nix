@@ -4,7 +4,8 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-       ./disk-config.nix
+      ./disk-config.nix
+      ./home-assi.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -39,8 +40,6 @@ services.openssh = {
    networking.hostName = "powerbox"; # Define your hostname.
  
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
-
-
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.users.alice = {
