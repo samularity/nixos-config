@@ -16,6 +16,7 @@
   ];
 
   environment.shellAliases = { ll = "ls -lah";};
+  networking.nameservers = [ "8.8.8.8" "8.8.4.4" ];
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
