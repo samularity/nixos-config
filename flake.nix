@@ -41,5 +41,17 @@
           ./box/configuration.nix
         ];
         };
+
+      nixosConfigurations.powerbox = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          # Overlays-module makes "pkgs.unstable" available in configuration.nix
+          ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
+          disko.nixosModules.disko
+          ./common.nix
+          ./powerbox/configuration.nix
+        ];
+        };
+
     };
 }
