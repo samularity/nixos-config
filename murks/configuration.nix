@@ -75,7 +75,7 @@
 
   # Enable sound with pipewire.
   #sound.enable = true;
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -138,8 +138,8 @@ programs.ssh.startAgent = true;
         {
           name = "platformio-ide";
           publisher = "platformio";
-          version = "3.0.0";
-          sha256 = "sha256-+0haTk/xbPoustJVE81tI9X8gcfiamx8nZBm7kGGY6c=";
+          version = "3.3.4";
+          sha256 = "sha256-qfNz4IYjCmCMFLtAkbGTW5xnsVT8iDnFWjrgkmr2Slk=";
         }
 
         {
@@ -163,7 +163,6 @@ programs.ssh.startAgent = true;
 
     in  [
       wireshark
-      kate
       google-chrome
       thunderbird
       bintools
