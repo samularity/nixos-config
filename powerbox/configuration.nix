@@ -40,6 +40,8 @@ services.openssh = {
    networking.hostName = "powerbox"; # Define your hostname.
  
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+ networking.firewall.allowedTCPPorts = [ 8080 ];
+
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.users.alice = {
