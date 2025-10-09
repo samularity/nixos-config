@@ -39,9 +39,16 @@ services.openssh = {
   ];
    networking.hostName = "powerbox"; # Define your hostname.
 
+
+networking.interfaces.eno1.useDHCP = false;
+networking.interfaces.eno1.ipv4.addresses = [{
+  address = "192.168.178.5";
+  prefixLength = 24; # e.g., 24 for 255.255.255.0
+}];
+networking.defaultGateway = "192.168.178.1";
+
 networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 networking.firewall.allowedTCPPorts = [ 8080 ];
-
 
 services.adguardhome = {
   enable = true;
@@ -52,7 +59,7 @@ services.adguardhome = {
       address = "0.0.0.0:3688";
     };
     dns = {
-      bind_hosts = [ "192.168.178.71" ];
+      bind_hosts = [ "192.168.178.5" ];
       upstream_dns = [
         # Example config with quad9
        #"9.9.9.9#dns.quad9.net"
