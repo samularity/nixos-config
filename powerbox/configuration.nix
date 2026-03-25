@@ -48,6 +48,18 @@ networking.interfaces.eno1.ipv4.addresses = [{
 networking.defaultGateway = "192.168.178.1";
 
 networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+
+services.avahi = {
+  enable = true;
+  publish = {
+    enable = true;
+    userServicesEnabled = true;
+  };
+};
+# Optional: Enable nss-mdns for .local resolution in all applications
+nixpkgs.config.nssmdns.enable = true;
+
+
 networking.firewall.allowedTCPPorts = [ 8080 ];
 
 services.adguardhome = {
