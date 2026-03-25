@@ -58,6 +58,8 @@
   services.displayManager.sddm.wayland.enable = true;
   services.desktopManager.plasma6.enable = true;
 
+security.pam.services.sddm.kwallet.enable = true;
+#security.pam.services.sddm.enableGnomeKeyring = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -95,6 +97,7 @@
 
 programs.nix-ld.enable = true;
 programs.ssh.startAgent = true;
+programs.direnv.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sam = {
@@ -112,6 +115,7 @@ programs.ssh.startAgent = true;
           myVSCODE = 
           (vscode-with-extensions.override {
           vscodeExtensions = with vscode-extensions; [
+            platformio.platformio-vscode-ide
             bbenoist.nix
             rust-lang.rust-analyzer
             vadimcn.vscode-lldb
@@ -135,12 +139,12 @@ programs.ssh.startAgent = true;
         }
 
 
-        {
-          name = "platformio-ide";
-          publisher = "platformio";
-          version = "3.3.4";
-          sha256 = "sha256-qfNz4IYjCmCMFLtAkbGTW5xnsVT8iDnFWjrgkmr2Slk=";
-        }
+       # {
+       #   name = "platformio-ide";
+       #   publisher = "platformio";
+       #   version = "3.3.4";
+       #   sha256 = "sha256-qfNz4IYjCmCMFLtAkbGTW5xnsVT8iDnFWjrgkmr2Slk=";
+       # }
 
         {
 
@@ -170,7 +174,6 @@ programs.ssh.startAgent = true;
       signal-desktop
       firefox
       unrar
-      libsForQt5.ark
       gparted
       element-desktop
       pulseview
