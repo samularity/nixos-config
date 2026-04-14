@@ -128,6 +128,8 @@ programs.direnv.enable = true;
             vscode-extensions.streetsidesoftware.code-spell-checker
             tomoki1207.pdf
             bierner.markdown-mermaid
+            github.copilot
+            github.copilot-chat
 
           ]++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
 
@@ -139,12 +141,15 @@ programs.direnv.enable = true;
         }
 
 
-       # {
-       #   name = "platformio-ide";
-       #   publisher = "platformio";
-       #   version = "3.3.4";
-       #   sha256 = "sha256-qfNz4IYjCmCMFLtAkbGTW5xnsVT8iDnFWjrgkmr2Slk=";
-       # }
+        {
+          name = "mistral-code";
+          publisher = "mistralai";
+          version = "1.14.4";
+          sha256 = "sha256-3jrBTiso1BZ4VbyaJWfGNv4Eaqr2xCX/hZrJFqq3j8o=";
+        }
+
+        
+
 
         {
 
