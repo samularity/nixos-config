@@ -12,12 +12,22 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelParams = [ "ip=dhcp" ];
+  # Don't request DHCP from the kernel at early boot; we manage networking
+  boot.kernelParams = [ "ip=192.168.178.5::192.168.178.1:255.255.255.0::eno1:off" ];
+# Ensure initrd runs a DHCP client so the machine is reachable early for
+# unlocking and initrd SSH, even though stage-2 uses static networking.
+#boot.initrd.network.udhcpc.enable = true;
+# Keep the initrd-configured network until stage-2 takes over to avoid
+# losing connectivity before unlocking is complete.
+#boot.initrd.network.flushBeforeStage2 = false;
+
   boot.initrd = {
     availableKernelModules = [ "e1000e" ];
     systemd.users.root.shell = "/bin/cryptsetup-askpass";
     network = {
       enable = true;
+      udhcpc.enable = true;
+      flushBeforeStage2 = false;
       ssh = {
         enable = true;
         port = 2222;
@@ -26,6 +36,7 @@
       };
     };
   };
+
 
 
 services.openssh = {
@@ -39,6 +50,11 @@ services.openssh = {
   ];
    networking.hostName = "powerbox"; # Define your hostname.
 
+  # Disable DHCP globally for this host so only the configured static
+  # addresses are applied (overrides `networking.useDHCP` default from
+  # `hardware-configuration.nix`).
+  networking.useDHCP = false;
+
 
 networking.interfaces.eno1.useDHCP = false;
 networking.interfaces.eno1.ipv4.addresses = [{
@@ -47,17 +63,25 @@ networking.interfaces.eno1.ipv4.addresses = [{
 }];
 networking.defaultGateway = "192.168.178.1";
 
-networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+# Disable NetworkManager so the static `networking.interfaces` configuration
+# for `eno1` is applied directly (NetworkManager may override static interface
+# settings and client DNS). Power users can enable NetworkManager and use its
+# connection profiles instead.
+networking.networkmanager.enable = false;
 
-services.avahi = {
-  enable = true;
-  publish = {
-    enable = true;
-    userServicesEnabled = true;
-  };
-};
+# Use the local AdGuard Home instance as primary resolver, with a public
+# fallback. This overrides `networking.nameservers` from `common.nix`.
+networking.nameservers = [ "192.168.178.1" "8.8.8.8" ];
+
+#services.avahi = {
+#  enable = true;
+#  publish = {
+#    enable = true;
+#    userServicesEnabled = true;
+#  };
+#};
 # Optional: Enable nss-mdns for .local resolution in all applications
-nixpkgs.config.nssmdns.enable = true;
+#nixpkgs.config.nssmdns.enable = true;
 
 
 networking.firewall.allowedTCPPorts = [ 8080 ];
@@ -80,6 +104,8 @@ services.adguardhome = {
         #"9.9.9.9"
        #"1.1.1.1"
         "192.168.178.1" # to resolve .lan domains, configured in openwrt to use 9.9.9.9
+        "1.1.1.1"
+        "8.8.8.8"
       ];
     };
     filtering = {

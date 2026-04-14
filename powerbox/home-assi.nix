@@ -5,8 +5,24 @@ let
   esp_confdir  = "/var/lib/esp-home-docker";
 in {
 
-    networking.firewall.allowedTCPPorts = [ 6052 8123 ];
+# --- Networking & Firewall ---
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 
+      8123 # Home Assistant UI
+      6052 # ESPHome UI
+    ];
+    # ESPHome often uses UDP for device discovery/mDNS
+    allowedUDPPorts = [ 5353 ]; 
+  };
 
+
+    systemd.timers."podman-auto-update".wantedBy = [ "timers.target" ];
+    virtualisation.podman.autoPrune = {
+        enable = true;
+        dates = "weekly";
+    };
+    
     virtualisation.oci-containers = {
     backend = "podman";
     containers.homeassistant = {
