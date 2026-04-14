@@ -23,7 +23,7 @@ in {
     containers.esphome = {
         volumes = [ "${esp_confdir}:/config" ];
         environment.TZ = "Europe/Berlin";
-        image = "ghcr.io/esphome/esphome:latest";
+        image = "ghcr.io/esphome/esphome:beta";
         imageAutoUpdate = true;
         extraOptions = [ 
         "--network=host" 
