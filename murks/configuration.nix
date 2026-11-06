@@ -13,26 +13,7 @@
 
   imports = [ 
     ./hardware-configuration.nix
-#    ../retiolum.nix
-#    ../common.nix
   ];
-
- # networking.retiolum.ipv4 = "10.243.0.42";  # optional
- # networking.retiolum.ipv6 = "42:0:2c4b:29bf:c7e4:6775:339e:2a0";
- # services.tinc.networks.retiolum = {
- #   rsaPrivateKeyFile = "/home/sam/retiolum-cfg/rsa_key.priv";
- #   ed25519PrivateKeyFile = "/home/sam/retiolum-cfg/ed25519_key.priv";
- # };
-
- # networking.interfaces."tinc.retiolum".ipv4.addresses = [ { address = config.networking.retiolum.ipv4; prefixLength = 16; } ];
- # networking.interfaces."tinc.retiolum".ipv6.addresses = [ { address = config.networking.retiolum.ipv6; prefixLength = 16; } ];
-
-
-
-  networking.retiolum.ed25519PrivateKeyFile =      "/home/sam/retiolum-cfg/ed25519_key.priv";
-
-
-
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -56,6 +37,8 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  networking.retiolum.ed25519PrivateKeyFile =      "/home/sam/retiolum-cfg/ed25519_key.priv";
+  systemd.network.wait-online.enable = false; #no need to wait for retiolum
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
