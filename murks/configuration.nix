@@ -214,7 +214,7 @@ hardware.acpilight.enable = true;
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "sam";
-  
+
 
   services.udev = {
       extraRules = ''
@@ -225,6 +225,9 @@ hardware.acpilight.enable = true;
 
 #used for gio mount dav:
 services.gvfs.enable = true;
+
+#check for nixos updates and remind me...
+services.nixos-update-check.enable = true;
 
 
   # Some programs need SUID wrappers, can be configured further or are

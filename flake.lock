@@ -98,6 +98,26 @@
         "type": "github"
       }
     },
+    "nixos-update-check": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793998224,
+        "narHash": "sha256-5+OKjLYwknx0MiCSJMLjPvvMVrgWpo42CS883ZC6Qxg=",
+        "owner": "samularity",
+        "repo": "nixos-versioncheck",
+        "rev": "4176b4ec4d6e0aa3e3baa72ade7a469dc46124e9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "samularity",
+        "repo": "nixos-versioncheck",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1789012029,
@@ -164,6 +184,7 @@
         "disko": "disko",
         "kartei": "kartei",
         "nixos-hardware": "nixos-hardware",
+        "nixos-update-check": "nixos-update-check",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-unstable": "nixpkgs-unstable"
       }

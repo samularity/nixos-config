@@ -8,8 +8,10 @@
   inputs.disko.url = "github:nix-community/disko";
   inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
   inputs.kartei.url = "github:krebs/kartei";
+  inputs.nixos-update-check.url = "github:samularity/nixos-versioncheck";
+  inputs.nixos-update-check.inputs.nixpkgs.follows = "nixpkgs";
 
- outputs = { self, nixpkgs, nixpkgs-unstable, nixos-hardware, disko, kartei }:
+ outputs = { self, nixpkgs, nixpkgs-unstable, nixos-hardware, disko, kartei, nixos-update-check }:
     let
       system = "x86_64-linux";
       overlay-unstable = final: prev: {
@@ -28,6 +30,7 @@
           ./murks/configuration.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-x270
           kartei.nixosModules.retiolum
+          nixos-update-check.nixosModules.default
         ];
       };
 
