@@ -1,22 +1,24 @@
 {
   description = "my system config";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+  #inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   inputs.nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   inputs.disko.url = "github:nix-community/disko";
   inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
   inputs.nixos-versioncheck.url = "github:samularity/nixos-versioncheck";
   inputs.nixos-versioncheck.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.kartei.url = "github:krebs/kartei";
 
- outputs = { self, nixpkgs, nixpkgs-unstable, nixos-hardware, disko, nixos-versioncheck }:
+ outputs = { self, nixpkgs, nixpkgs-unstable, nixos-hardware, disko, nixos-versioncheck, kartei }:
     let
       system = "x86_64-linux";
       overlay-unstable = final: prev: {
         unstable = import nixpkgs-unstable {
           inherit system;
-          config.allowUnfree = true;
-        };
+          config.allowUnfree = true;  
+        }; 
       };
     in {
       nixosConfigurations.murks = nixpkgs.lib.nixosSystem {
@@ -28,6 +30,7 @@
           ./murks/configuration.nix
           nixos-versioncheck.nixosModules.x86_64-linux.default
           nixos-hardware.nixosModules.lenovo-thinkpad-x270
+          kartei.nixosModules.retiolum
         ];
       };
 
