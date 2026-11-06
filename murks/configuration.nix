@@ -13,19 +13,26 @@
 
   imports = [ 
     ./hardware-configuration.nix
-    ../retiolum.nix
+#    ../retiolum.nix
 #    ../common.nix
   ];
 
-  networking.retiolum.ipv4 = "10.243.0.42";  # optional
-  networking.retiolum.ipv6 = "42:0:2c4b:29bf:c7e4:6775:339e:2a0";
-  services.tinc.networks.retiolum = {
-    rsaPrivateKeyFile = "/home/sam/retiolum-cfg/rsa_key.priv";
-    ed25519PrivateKeyFile = "/home/sam/retiolum-cfg/ed25519_key.priv";
-  };
+ # networking.retiolum.ipv4 = "10.243.0.42";  # optional
+ # networking.retiolum.ipv6 = "42:0:2c4b:29bf:c7e4:6775:339e:2a0";
+ # services.tinc.networks.retiolum = {
+ #   rsaPrivateKeyFile = "/home/sam/retiolum-cfg/rsa_key.priv";
+ #   ed25519PrivateKeyFile = "/home/sam/retiolum-cfg/ed25519_key.priv";
+ # };
 
-  networking.interfaces."tinc.retiolum".ipv4.addresses = [ { address = config.networking.retiolum.ipv4; prefixLength = 16; } ];
-  networking.interfaces."tinc.retiolum".ipv6.addresses = [ { address = config.networking.retiolum.ipv6; prefixLength = 16; } ];
+ # networking.interfaces."tinc.retiolum".ipv4.addresses = [ { address = config.networking.retiolum.ipv4; prefixLength = 16; } ];
+ # networking.interfaces."tinc.retiolum".ipv6.addresses = [ { address = config.networking.retiolum.ipv6; prefixLength = 16; } ];
+
+
+
+  networking.retiolum.ed25519PrivateKeyFile =      "/home/sam/retiolum-cfg/ed25519_key.priv";
+
+
+
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -99,11 +106,40 @@ programs.nix-ld.enable = true;
 programs.ssh.startAgent = true;
 programs.direnv.enable = true;
 
+#for iphone
+services.usbmuxd.enable = true;
+services.usbmuxd.package = pkgs.usbmuxd2; 
+
+
+#nix gc and cleanup
+nix.settings = {
+    # Automatically optimize the store on every build by hard-linking identical files
+    auto-optimise-store = true;
+  };
+
+  nix.gc = {
+    # Enable automatic garbage collection
+    automatic = true;
+    # Schedule (e.g., "weekly", "daily", or systemd calendar format like "Sun *-*-* 03:00:00")
+    dates = "weekly";
+    # Delete generations older than 14 days during auto-GC
+    options = "--delete-older-than 14d";
+  };
+
+  # Fix the crash by enabling Avahi daemon for mDNS discovery
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true; # Allows resolving .local hostnames over IPv4
+    openFirewall = true; # Opens necessary firewall ports for mDNS discovery
+  };
+
+powerManagement.enable = true;
+hardware.acpilight.enable = true;
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sam = {
     isNormalUser = true;
     description = "sam";
-    extraGroups = [ "networkmanager" "wheel" "dialout" ];
+    extraGroups = [ "networkmanager" "wheel" "dialout" "video"];
 
 
     packages = with pkgs; let 
@@ -130,6 +166,7 @@ programs.direnv.enable = true;
             bierner.markdown-mermaid
             github.copilot
             github.copilot-chat
+            prettier.prettier-vscode
 
           ]++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
 
@@ -148,11 +185,7 @@ programs.direnv.enable = true;
           sha256 = "sha256-3jrBTiso1BZ4VbyaJWfGNv4Eaqr2xCX/hZrJFqq3j8o=";
         }
 
-        
-
-
         {
-
           name = "code-spell-checker-german";
           publisher = "streetsidesoftware";
           version = "2.2.1";
@@ -184,6 +217,9 @@ programs.direnv.enable = true;
       pulseview
       inkscape
       wine
+      ifuse
+      libimobiledevice
+
       (pkgs.writers.writeDashBin "code" ''
       NIX_LD_LIBRARY_PATH=${NIX_LD_LIBRARY_PATH} NIX_LD=${NIX_LD} ${myVSCODE}/bin/code "$@"
       '')
