@@ -167,6 +167,7 @@ hardware.acpilight.enable = true;
             github.copilot
             github.copilot-chat
             prettier.prettier-vscode
+            anthropic.claude-code
 
           ]++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
 
@@ -231,7 +232,6 @@ hardware.acpilight.enable = true;
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "sam";
   
-  services.nixos-versioncheck.enable = true;
 
   services.udev = {
       extraRules = ''
